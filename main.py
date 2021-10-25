@@ -1,4 +1,6 @@
+import math
 import sys
+
 
 def citireLista():
     lst = []
@@ -7,6 +9,45 @@ def citireLista():
     for x in numbersAsString:
         lst.append(float(x))
     return lst
+
+
+def perfect_square(lst):
+    """"
+    determina daca toate nr. dintr-o lista sunt patrate perfecte
+    :param lst: lista de numere intregi
+    :return: True, daca toatee nr. din lst sunt patrate perfecte sau False, in caz contrar
+    """
+    for x in lst:
+        rad = math.sqrt(x)
+        if int(rad + 0.5) ** 2 != x:
+            return False
+    return True
+
+
+def test_perfect_square():
+    assert perfect_square([4, 9]) is True
+    assert perfect_square([3]) is False
+    assert perfect_square([]) is True
+
+
+def get_longest_all_perfect_squares(lst):
+    """
+    determina cea mai lunga subsecventa de nr. patrate perfecte
+    :param lst: lista de nr. intregi
+    :return: cea mai lunga subsecventa de nr. patrate perfecte din lst
+    """
+    longest_subsequence = []
+    for i in range(len(lst)):
+        for j in range(i, len(lst)):
+            if perfect_square(lst[i:j + 1]) and len(lst[i:j + 1]) > len(longest_subsequence):
+                longest_subsequence = lst[i:j + 1]
+    return longest_subsequence
+
+
+def test_get_longest_all_perfect_squares():
+    assert get_longest_all_perfect_squares([4, 5]) == [4]
+    assert get_longest_all_perfect_squares([32, 0, 81]) == [0, 81]
+    assert get_longest_all_perfect_squares([55, 60, 82]) == []
 
 
 def is_palindrome(n):
@@ -57,12 +98,12 @@ def get_longest_all_palindromes(lst: list[int]):
     longestsequence = []
     for i in range(len(lst)):
         for j in range(len(lst)):
-            if all_is_palindrome (lst[i:j + 1]) and len(lst[i:j + 1]) > len(longestsequence):
+            if all_is_palindrome(lst[i:j + 1]) and len(lst[i:j + 1]) > len(longestsequence):
                 longestsequence = lst[i:j + 1]
     return longestsequence
 
 
-def test_get_longest_all_palindromes() -> list:
+def test_get_longest_all_palindromes():
     assert get_longest_all_palindromes([3, 7, 23]) == [3, 7]
     assert get_longest_all_palindromes([56, 937, 100, 890, 9]) == [9]
     assert get_longest_all_palindromes([898, 66566, 3882, 191]) == [898, 66566]
@@ -121,12 +162,15 @@ def main():
     test_is_palindrome()
     test_is_power_k()
     test_get_longest_power_of_k()
+    test_perfect_square()
+    test_get_longest_all_perfect_squares()
     print("Testele au trecut cu succes")
     while True:
         print("1. Citire lista")
         print("2. Cea mai lunga secventa de numere palindrom")
         print("3. Cea mai lunga secventa de numere cu radacini de ordin k")
-        print("4. Iesire")
+        print("4. Cea mai lunga secventa de numere patrate perfecte")
+        print("5. Iesire")
 
         optiune = input("Alege optiunea: ")
 
@@ -138,6 +182,8 @@ def main():
             k = int(input("Dati valoarea k: "))
             print(get_longest_powers_of_k(lst, k))
         elif optiune == '4':
+            print(get_longest_all_perfect_squares(lst))
+        elif optiune == '5':
             sys.exit()
         else:
             print("optiune invalida")
