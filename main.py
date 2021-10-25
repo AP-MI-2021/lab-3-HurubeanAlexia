@@ -1,3 +1,5 @@
+import sys
+
 def citireLista():
     lst = []
     givenString = input("Dati lista, cu elementele separate prin virgula: ")
